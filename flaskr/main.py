@@ -5,6 +5,7 @@ from flask import redirect
 from flask import url_for
 from flask import flash
 import DataBaseConnection
+import time
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -28,15 +29,23 @@ def login():
             return redirect(url_for('home'))
     return render_template('Login.html', error=error)
 
-@app.route('/Register', methods=['GET', 'POST'])
+@app.route('/SignUp', methods=['GET', 'POST'])
 def register():
     db = DataBaseConnection
     error = None
     if request.method == 'POST':
 
-        correo = request.form['username']
-        pssw = request.form['password']
+        correo = request.form['Mail']
+        id = request.form['Id']
+        birth = request.form['Birth']
+        address = request.form['Address']
+        pssw = request.form['Password']
 
+        q = 'insert into usuario (cedula, Bday, Dir, correo, password) values (%s, %s, %s, %s, %s);'
+        db.DBInsert(q, (id, birth, address, correo, pssw,))
+        time.sleep(1)
+
+        return redirect(url_for('login'))
 
     return render_template('SignUp.html')
 

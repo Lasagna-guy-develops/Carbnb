@@ -90,13 +90,16 @@ span.psw {
     <div class="imgcontainer">
     <img src="/static/img.webp" alt="Avatar" class="avatar">
     </div>
+    <br>
+    <h2>ingresa tu info prro</h2>
+    <br>
         <form action="" method="post">
-            <input type="text" placeholder="Mail" name="username" value="{{ request.form.mail }}" >
-            <input type="text" placeholder="Id" name="username" value="{{ request.form.id }}" >
-            <input type="text" placeholder="Birth" name="username" value="{{ request.form.birth }}" >
-            <input type="text" placeholder="Address" name="username" value="{{ request.form.address }}" >
-            <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}" >
-            <input class="button" type="submit" value="Login" >
+            <input type="text" placeholder="Mail" name="Mail" value="{{ request.form.mail }}" >
+            <input type="text" placeholder="Id" name="Id" value="{{ request.form.id }}" >
+            <input type="text" placeholder="Birth" name="Birth" value="{{ request.form.birth }}" >
+            <input type="text" placeholder="Address" name="Address" value="{{ request.form.address }}" >
+            <input type="password" placeholder="Password" name="Password" value="{{ request.form.password }}" >
+            <input class="button" type="submit" value="Submit" >
         </form>
         {% if error %}
           <p class="error" type="submit"><strong>Error:</strong> {{ error }}
