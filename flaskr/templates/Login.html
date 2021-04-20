@@ -44,6 +44,13 @@ button:hover {
   background-color: #f44336;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
@@ -52,6 +59,9 @@ button:hover {
 img.avatar {
   width: 20%;
   border-radius: 25%;
+   display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container {
@@ -88,35 +98,9 @@ span.psw {
         {% if error %}
           <p class="error" type="submit"><strong>Error:</strong> {{ error }}
         {% endif %}
+              <br>
+              <br>
         <a href="http://127.0.0.1:5000/Registro">¡Registrate ahora!</a>
     </body>
 </html>
-
-<!--
-<form action="/action_page.php" method="post">
-  <div class="imgcontainer">
-    <img src="TERRY-CREW.jpeg" alt="Avatar" class="avatar">
-  </div>
-
-  <div class="container">
-
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" value="{{ request.form.username }}" required>
-
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" value="{{ request.form.password }}" required>
-
-    <input class="btn btn-default" type="submit" value="Login">
-    <label>
-
-    <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
-  </div>
-
-  <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
-    <span class="psw">Forgot <a href="#">password?</a></span>
-  </div>
-</form> 
--->
 
