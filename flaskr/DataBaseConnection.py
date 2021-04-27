@@ -7,9 +7,9 @@ import mysql.connector
 
 def connect():
     conn = mysql.connector.connect(host = "localhost",
-                                    database = "vaporblack",
+                                    database = "carbnb",
                                     user = "root",
-                                    password = "Decoldshooterhello12345*",
+                                    password = "Sebas12345*/",
                                     auth_plugin='mysql_native_password'
                                     )
 
@@ -61,7 +61,6 @@ def sql_delete(query, var):
 
 
 if __name__ == "__main__":
-    print(getCategories())
     exit()
 
 

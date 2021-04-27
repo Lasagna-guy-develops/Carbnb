@@ -6,7 +6,7 @@
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
-input[type=text], input[type=password], input[type=date] {
+input[type=text], input[type=password] {
   text-align: center;
   width: 75%;
   padding: 12px 20px;
@@ -91,14 +91,10 @@ span.psw {
     <img src="/static/img.webp" alt="Avatar" class="avatar">
     </div>
     <br>
-    <h2>ingresa tu info prro</h2>
+    <h2>ingresa tu code prro</h2>
     <br>
         <form action="" method="post">
-            <input type="text" placeholder="Mail" name="Mail" value="{{ request.form.mail }}" >
-            <input type="text" placeholder="Id" name="Id" value="{{ request.form.id }}" >
-            <input type="date" placeholder="Birth" name="Birth" value="{{ request.form.birth }}" >
-            <input type="text" placeholder="Address" name="Address" value="{{ request.form.address }}" >
-            <input type="password" placeholder="Password" name="Password" value="{{ request.form.password }}" >
+            <input type="text" placeholder="Code" name="Code" value="{{ request.form.Code }}" >
             <input class="button" type="submit" value="Submit" >
         </form>
         {% if error %}

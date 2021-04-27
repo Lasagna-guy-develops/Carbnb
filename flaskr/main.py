@@ -5,9 +5,12 @@ from flask import redirect
 from flask import url_for
 from flask import flash
 import DataBaseConnection
+import randomCode
+import mensaje
 import time
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+code = 0
 
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
@@ -44,11 +47,32 @@ def register():
         q = 'insert into usuario (cedula, Bday, Dir, correo, password) values (%s, %s, %s, %s, %s);'
         db.DBInsert(q, (id, birth, address, correo, pssw,))
         time.sleep(1)
-
-        return redirect(url_for('login'))
+        code = randomCode.generarCodigo()
+        mensaje.enviar.codigo(correo, code)
+        return redirect(url_for('confirmation'))
 
     return render_template('SignUp.html')
+
+@app.route('/Confirmation', methods=['GET', 'POST'])
+def confirmation():
+    codigo = request.form['Code']
+    if code==codigo:
+        flash("tu correo ha sido confirmado")
+        return redirect(url_for('Login'))
+    return render_template('confirmation.html')
 
 @app.route('/Home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
+
+@app.route('/Search', methods=['GET', 'POST'])
+def Search():
+    return render_template('carro.html')
+
+@app.route('/Rented', methods=['GET', 'POST'])
+def Rented():
+    return render_template('carro.html')
+
+@app.route('/Display', methods=['GET', 'POST'])
+def Display():
+    return render_template('display.html')

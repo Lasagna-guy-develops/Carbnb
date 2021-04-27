@@ -1,25 +1,74 @@
-<!DOCTYPE html>
 <html>
-<body>
+    <head>
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <style type="text/css">
+          img {
+        display : block;
+        margin : 0 auto;
+          }
+      </style>
+      </head>
+   <body>
 
-<h1>The select element</h1>
+        <div class ='row'>
+            <img src = '/static/download.png'>
+        </div>
 
-<p>The select element is used to create a drop-down list.</p>
+<style>
+ul {
+  list-style-type: none;
+  margin: 20;
+  padding: 0;
+  overflow: hidden;
+  background-color: #4CAF50;
+}
 
-<form action="/action_page.php">
-  <label for="cars">Choose a car:</label>
-  <select name="cars" id="cars">
-    <option value="volvo">Volvo</option>
-    <option value="saab">Saab</option>
-    <option value="opel">Opel</option>
-    <option value="audi">Audi</option>
-  </select>
-  <br><br>
-  <input type="submit" value="Submit">
-</form>
+li {
+  float: left;
+}
 
-<p>Click the "Submit" button and the form-data will be sent to a page on the
-server called "action_page.php".</p>
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
-</body>
+li a:hover {
+  background-color:  #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 20%;
+  border-radius: 25%;
+   display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+<ul>
+  <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
+  <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
+  <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
+</ul>
+        <br>
+        <br>
+        <br>
+        <br>
+       <div class="imgcontainer">
+    <img src="/static/img.webp" alt="Avatar" class="avatar">
+    </div>
+
+    </body>
 </html>
