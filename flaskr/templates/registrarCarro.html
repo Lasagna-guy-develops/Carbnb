@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Carb&b Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -14,8 +13,33 @@
         margin : 0 auto;
           }
       </style>
-      </head>
+
+    <title>Carb&b Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+ul {
+  list-style-type: none;
+  margin: 20;
+  padding: 0;
+  overflow: hidden;
+  background-color: #4CAF50;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color:  #f44336;
+}
 body {font-family: Arial, Helvetica, sans-serif;}
 
 input[type=text], input[type=password] {
@@ -27,6 +51,19 @@ input[type=text], input[type=password] {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+td {
+  width: 100%;
+  text-align: center;
+}
+table {
+  text-align: center;
+  width: 85%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+
+  box-sizing: border-box;
+}
 
 input[type=submit] {
   text-align: center;
@@ -36,7 +73,7 @@ input[type=submit] {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 25%;
+  width: 50%;
 }
 
 body {
@@ -69,7 +106,7 @@ button:hover {
 }
 
 img.avatar {
-  width: 30%;
+  width: 20%;
   border-radius: 25%;
    display: block;
   margin-left: auto;
@@ -95,53 +132,49 @@ span.psw {
      width: 100%;
   }
 }
-ul {
-  list-style-type: none;
-  margin: 20;
-  padding: 0;
-  overflow: hidden;
-  background-color: #4CAF50;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover {
-  background-color:  #4CAF50;
-}
 </style>
-</head>
-<ul>
+
+  <ul>
     <li><a href=""></a></li>
-  <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
-  <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
-  <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
+    <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
+    <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
+    <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
+    <li><a href=http://127.0.0.1:5000/EditProfile>Edit profile</a></li>
+    <li><a href=http://127.0.0.1:5000/AddCar>Add car</a></li>
 </ul>
+
+</head>
 <body>
-    <br>
-    <br>
+
     <div class="imgcontainer">
-    <img src="/static/{{car.tag}}.jpg" >
+    <img src="/static/img.webp" alt="Avatar" class="avatar">
     </div>
     <br>
+    <h2>Registra Un Automóvil:</h2>
     <br>
-    <br>
-    <h1>{{car.model}}</h1>
-    <p>Modelo: {{car.year}} </p>
-    <p2>Precio: ${{car.price}}/día </p2>
-    <br>
-    <br>
-    <br>
-    <button name="forwardBtn" onclick="lok()">Forward</button>
+        <form action="" method="post" class="center">
+            <input type="text" placeholder="Placa" name="Placa" value="{{ request.form.mail }}" >
+            <input type="text" placeholder="Cedula" name="Cedula" value="{{ request.form.id }}" >
+
+            <table>
+            <tr>
+                <td><span>Seguro</span></td>
+                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf"></td>
+            </tr>
+            <tr>
+                <td><span>SOAT</span></td>
+                <td><input type="file" placeholder="SOAT" name="SOAT" value="SOAT" accept="pdf"></td>
+            </tr>
+            <tr>
+                <td><span>Matrícula</span></td>
+                <td><input type="file" placeholder="Matricula" name="Matricula" value="Matricula" accept="pdf"></td>
+            </tr>
+                <td><span>Tecnicomecánica</span></td>
+                <td><input type="file" placeholder="TecnicoM" name="TecnicoM" value="TecnicoM" accept="pdf"></td>
+            </tr>
+            </table>
+            <input class="button" type="submit" value="Enviar" >
+        </form>
         {% if error %}
           <p class="error" type="submit"><strong>Error:</strong> {{ error }}
         {% endif %}
