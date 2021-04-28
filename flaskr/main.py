@@ -65,6 +65,16 @@ def confirmation():
 def home():
     return render_template('home.html')
 
+@app.route('/RegistrarCarro', methods=['GET', 'POST'])
+def registrarCarro():
+    return render_template('registrarCarro.html')
+
+if __name__ == "__main__":
+
+    # print(app.secret_key())
+    app.run(debug = True)
+
+
 @app.route('/Search', methods=['GET', 'POST'])
 def Search():
     return render_template('carro.html')
