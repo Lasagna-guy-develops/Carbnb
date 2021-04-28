@@ -17,10 +17,7 @@ import mensaje
 import time
 
 app = Flask(__name__)
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyAio1R0jHxwsqABXYFP-5d-nJSWFEZTojc"
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
-GoogleMaps(app, key="AIzaSyAio1R0jHxwsqABXYFP-5d-nJSWFEZTojc")
 
 class car:
     def __init__(self, tag, price, model, year, lat, lng):
