@@ -1,9 +1,8 @@
 import DataBaseConnection
 db = DataBaseConnection
-id='2225655'
-correo='admin'
-birth='2002-03-30'
-address='lolazo'
-pssw='admin'
-q = 'select * from usuario'
-print(db.sql_query(q))
+tag='HGW537'
+model='spark'
+year='2015'
+id=1
+price='75000'
+cars = db.sql_query('select * from carro;')

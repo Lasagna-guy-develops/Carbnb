@@ -139,6 +139,7 @@ span.psw {
     <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
     <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
     <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
+    <li><a href=http://127.0.0.1:5000/MyRent>My rented car</a></li>
     <li><a href=http://127.0.0.1:5000/EditProfile>Edit profile</a></li>
     <li><a href=http://127.0.0.1:5000/AddCar>Add car</a></li>
 </ul>
@@ -152,13 +153,19 @@ span.psw {
     <br>
     <h2>Registra Un Automóvil:</h2>
     <br>
-        <form action="" method="post" class="center">
-            <input type="text" placeholder="Placa" name="Placa" value="{{ request.form.mail }}" >
-            <input type="text" placeholder="Cedula" name="Cedula" value="{{ request.form.id }}" ><br>
+        <form action="" method="post" class="center" enctype="multipart/form-data">
+            <input type="text" placeholder="Placa" name="Placa" value="{{ request.form.tag }}" >
+            <input type="text" placeholder="Modelo" name="Modelo" value="{{ request.form.model }}" >
+            <input type="text" placeholder="Año" name="Año" value="{{ request.form.year }}" >
+            <input type="text" placeholder="Precio" name="Precio" value="{{ request.form.price }}" >
             <table>
+                <tr>
+                <td><span>Fotos</span></td>
+                <td><input type="file" placeholder="Fotos" name="Fotos[]" value="Fotos" multiple="true" accept="png"></td>
+            </tr>
             <tr>
                 <td><span>Seguro</span></td>
-                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf"></td>
+                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf" ></td>
             </tr>
             <tr>
                 <td><span>SOAT</span></td>

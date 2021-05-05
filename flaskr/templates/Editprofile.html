@@ -127,6 +127,7 @@ span.psw {
     <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
     <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
     <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
+    <li><a href=http://127.0.0.1:5000/MyRent>My rented car</a></li>
     <li><a href=http://127.0.0.1:5000/EditProfile>Edit profile</a></li>
     <li><a href=http://127.0.0.1:5000/AddCar>Add car</a></li>
 </ul>
@@ -140,10 +141,12 @@ span.psw {
     <h2>ingresa tu info prro</h2>
     <br>
         <form action="" method="post">
-            <input type="text" placeholder="Mail" name="Mail" value="{{ user.Mail }}" >
-            <input type="text" placeholder="Id" name="Id" value="{{ user.id }}" readonly>
-            <input type="date" placeholder="Birth" name="Birth" value="{{ user.bday }}" readonly>
-            <input type="text" placeholder="Address" name="Address" value="{{ user.Dir }}" >
+            <input type="text" placeholder="Name" name="Name" value="{{ User.name }}" readonly>
+            <input type="text" placeholder="LName" name="LName" value="{{ User.lname }}" readonly>
+            <input type="text" placeholder="Mail" name="Mail" value="{{ User.Mail }}" >
+            <input type="text" placeholder="Id" name="Id" value="{{ User.id }}" readonly>
+            <input type="date" placeholder="Birth" name="Birth" value="{{ User.bday }}" readonly>
+            <input type="text" placeholder="Address" name="Address" value="{{ User.Dir }}" >
             <input class="button" type="submit" value="Submit" >
         </form>
         {% if error %}
