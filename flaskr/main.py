@@ -220,15 +220,14 @@ def show_car(car_code):
     else:
         abort(404)
 
-@app.route("/MyRent/")
-def show_car(car_code):
-    no_session()
-    db = DataBaseConnection
-    q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
-    p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], q[0]['id_carro'], q[0]['Id_renta'], q[0]['Id_rentb'])
-
-    return render_template('display.html', p=p)
-
+# @app.route("/MyRent/")
+# def show_car(car_code):
+#     no_session()
+#     db = DataBaseConnection
+#     q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
+#     p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], q[0]['id_carro'], q[0]['Id_renta'], q[0]['Id_rentb'])
+#
+#     return render_template('display.html', p=p)
 
 @app.route('/EditProfile', methods=['GET', 'POST'])
 def Editprofile():
