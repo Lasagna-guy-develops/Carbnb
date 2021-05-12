@@ -104,28 +104,14 @@ span.psw {
     <img src="/static/img.webp" alt="Avatar" class="avatar">
     </div>
     <br>
-    <h2>Registra Un Automóvil:</h2>
+    <h2>Auto para arrendar:</h2>
     <br>
         <form action="" method="post">
-            <input type="text" placeholder="Placa" name="Placa" value="Placa" required>
-            <input type="text" placeholder="Cedula" name="Cedula" value="Cedula" required><br>
-            <table>
-            <tr>
-                <td><span>Suba una copia del Seguro del vehículo</span></td>
-                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf" required></td>
-            </tr>
-            <tr>
-                <td><span>Suba una copia del SOAT del vehículo</span></td>
-                <td><input type="file" placeholder="SOAT" name="SOAT" value="SOAT" accept="pdf" required></td>
-            </tr>
-            <tr>
-                <td><span>Suba una copia de la Matrícula del vehículo</span></td>
-                <td><input type="file" placeholder="Matricula" name="Matricula" value="Matricula" accept="pdf" required></td>
-            </tr>
-                <td><span>Suba una copia de la revision tecnicomecánica del vehículo</span></td>
-                <td><input type="file" placeholder="TecnicoM" name="TecnicoM" value="TecnicoM" accept="pdf" required></td>
-            </tr>
-            </table>
+            <input type="number" min="500" max="2000000" placeholder="Precio" name="Precio" value="Precio" required><br>
+            <p>Fecha inicio   <input type="date" placeholder="Fecha Inicio" name="Fecha Inicio" value="Fecha Inicio" required></p><br>
+            <p>Fecha Fin   <input type="date" placeholder="Fecha Fin" name="Fecha Fin" value="Fecha Fin" required></p><br>
+            <label> <input type="checkbox" placeholder="AceptoTC" name="AceptoTC" required> Acepto los términos y condiciones</label><br>
+
             <input class="button" type="submit" value="Enviar" >
         </form>
         {% if error %}
