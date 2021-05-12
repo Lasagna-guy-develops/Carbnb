@@ -107,23 +107,23 @@ span.psw {
     <h2>Registra Un Automóvil:</h2>
     <br>
         <form action="" method="post">
-            <input type="text" placeholder="Placa" name="Placa" value="Placa" required>
-            <input type="text" placeholder="Cedula" name="Cedula" value="Cedula" required><br>
+            <input type="text" placeholder="Placa" name="Placa" value="{{ request.form.mail }}" >
+            <input type="text" placeholder="Cedula" name="Cedula" value="{{ request.form.id }}" ><br>
             <table>
             <tr>
                 <td><span>Suba una copia del Seguro del vehículo</span></td>
-                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf" required></td>
+                <td><input type="file" placeholder="Seguro" name="Seguro" value="Seguro" accept="pdf"></td>
             </tr>
             <tr>
                 <td><span>Suba una copia del SOAT del vehículo</span></td>
-                <td><input type="file" placeholder="SOAT" name="SOAT" value="SOAT" accept="pdf" required></td>
+                <td><input type="file" placeholder="SOAT" name="SOAT" value="SOAT" accept="pdf"></td>
             </tr>
             <tr>
                 <td><span>Suba una copia de la Matrícula del vehículo</span></td>
-                <td><input type="file" placeholder="Matricula" name="Matricula" value="Matricula" accept="pdf" required></td>
+                <td><input type="file" placeholder="Matricula" name="Matricula" value="Matricula" accept="pdf"></td>
             </tr>
                 <td><span>Suba una copia de la revision tecnicomecánica del vehículo</span></td>
-                <td><input type="file" placeholder="TecnicoM" name="TecnicoM" value="TecnicoM" accept="pdf" required></td>
+                <td><input type="file" placeholder="TecnicoM" name="TecnicoM" value="TecnicoM" accept="pdf"></td>
             </tr>
             </table>
             <input class="button" type="submit" value="Enviar" >
