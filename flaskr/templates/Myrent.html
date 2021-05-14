@@ -141,10 +141,20 @@ span.psw {
     <h2>ingresa tu info prro</h2>
     <br>
         <form action="" method="post">
-            <input type="text" placeholder="inicio" name="inicio" value="{{ p.start }}" readonly>
-            <input type="text" placeholder="final" name="final" value="{{ p.end }}" readonly>
-            <input type="text" placeholder="precio" name="precio" value="{{ p.price }}" readonly>
+            <input type="text" placeholder="inicio" name="inicio" value="{{ p.inicio }}" readonly>
+            <input type="text" placeholder="final" name="final" value="{{ p.final }}" readonly>
+            <input type="text" placeholder="precio" name="precio" value="{{ p.precio }}" readonly>
         </form>
+            <br>
+            <br>
+            <button name="forwardBtn" onclick="location.href='http://127.0.0.1:5000/return-files/matricula/{{p.placa}}'">matricula</button>
+            <br>
+            <br>
+            <button name="forwardBtn1" onclick="location.href='http://127.0.0.1:5000/return-files/seguro/{{p.placa}}'">seguro</button>
+            <br>
+            <br>
+            <button name="forwardBtn2" onclick="location.href='http://127.0.0.1:5000/return-files/soat/{{p.placa}}'">soat</button>
+
         {% if error %}
           <p class="error" type="submit"><strong>Error:</strong> {{ error }}
         {% endif %}
