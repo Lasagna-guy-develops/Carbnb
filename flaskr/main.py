@@ -1,7 +1,8 @@
 import os
 from os import abort
+from pprint import pprint
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask import render_template
 from flask import request
 from flask import redirect
@@ -42,13 +43,14 @@ class User:
         self.Mail = Correo
 
 class rent:
-    def __init__(self, start, end, price, cid, oid, rid):
+    def __init__(self, start, end, price, cid, oid, rid, tag):
         self.inicio = start
         self.final = end
         self.precio = price
         self.carro = cid
         self.dueño = oid
         self.rentador = rid
+        self.placa = tag
 
 def no_session():
     if "id" in session:
@@ -206,7 +208,7 @@ def Rented():
     )
     return render_template("carro.html", gmap=gmap, cars=cars)
 
-@app.route("/Display/<car_code>")
+@app.route("/Display/<car_code>", methods=['GET', 'POST'])
 def show_car(car_code):
     no_session()
     db = DataBaseConnection
@@ -220,14 +222,19 @@ def show_car(car_code):
     else:
         abort(404)
 
-# @app.route("/MyRent/")
-# def show_car(car_code):
-#     no_session()
-#     db = DataBaseConnection
-#     q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
-#     p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], q[0]['id_carro'], q[0]['Id_renta'], q[0]['Id_rentb'])
-#
-#     return render_template('display.html', p=p)
+@app.route("/MyRent", methods=['GET', 'POST'])
+def show_rent():
+    no_session()
+    db = DataBaseConnection
+    if db.sql_query_var('select count(*) from prestamo where Id_rentb = %s and Fecha_f between CURRENT_DATE() and "2040-07-05";', (session['id'],))[0]['count(*)']>0:
+        q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
+        car_id = q[0]['Id_carro']
+        print(car_id)
+        p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], car_id, q[0]['Id_renta'], q[0]['Id_rentb'], db.sql_query_var('select Placa from carro where id_car = %s', (car_id, ))[0]['Placa'])
+        print(p.placa)
+    else:
+        p=None
+    return render_template('Myrent.html', p=p)
 
 @app.route('/EditProfile', methods=['GET', 'POST'])
 def Editprofile():
@@ -292,7 +299,20 @@ def registrarCarro():
 
     return render_template('registrarCarro.html')
 
+@app.route('/return-files/matricula/<car_code>', methods=['GET', 'POST'])
+def return_filem(car_code):
+    path = 'static/cars/' + car_code + '/'
+    return send_from_directory(directory=path, filename='matricula.pdf', as_attachment=True)
 
+@app.route('/return-files/seguro/<car_code>', methods=['GET', 'POST'])
+def return_filese(car_code):
+    path = 'static/cars/' + car_code + '/'
+    return send_from_directory(directory=path, filename='seguro.pdf', as_attachment=True)
+
+@app.route('/return-files/soat/<car_code>', methods=['GET', 'POST'])
+def return_fileso(car_code):
+    path = 'static/cars/' + car_code + '/'
+    return send_from_directory(directory=path, filename='soat.pdf', as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
