@@ -91,10 +91,10 @@ span.psw {
     <img src="/static/img.webp" alt="Avatar" class="avatar">
     </div>
     <br>
-    <h2>ingresa tu code prro</h2>
+    <h2>ingresa tu correo, para recordarte tu contraseña</h2>
     <br>
-        <form action="" method="post">
-            <input type="text" placeholder="Code" name="Code" value="{{ request.form.Code }}" >
+        <form action="recordarPsswd" method="post">
+            <input type="text" placeholder="mail" name="mail" value="{{ request.form.Code }}" >
             <input class="button" type="submit" value="Submit" >
         </form>
         {% if error %}
