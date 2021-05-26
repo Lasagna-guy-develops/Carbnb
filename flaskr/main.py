@@ -10,8 +10,8 @@ from flask import url_for
 from flask import flash
 from flask import session
 
-
 from flask_googlemaps import GoogleMaps, Map, icons
+from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
 
 import DataBaseConnection
@@ -19,11 +19,14 @@ import randomCode
 import mensaje
 import time
 
+from flaskr import dbHandler
+
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyAio1R0jHxwsqABXYFP-5d-nJSWFEZTojc"
 GoogleMaps(app, key="AIzaSyAio1R0jHxwsqABXYFP-5d-nJSWFEZTojc")
+socketio = SocketIO(app)
 
 class car:
     def __init__(self, tag, price, model, year):
@@ -52,6 +55,10 @@ class rent:
         self.rentador = rid
         self.placa = tag
 
+class u:
+    def __init__(self, name):
+        self.name = name
+
 def no_session():
     if "id" in session:
         print("you're cool man")
@@ -64,6 +71,9 @@ def redirection():
         return redirect(url_for('home'))
     else:
         return redirect(url_for("login"))
+
+
+# Cosas del Login ..........................................................
 
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
@@ -82,9 +92,9 @@ def login():
             error = 'Invalid Credentials. Please try again.'
         else:
             flash('You were successfully logged in')
-            id = db.sql_query_var('select Id from usuario where correo = %s', (correo, ))[0]['Id']
-            print(id)
-            session["id"] = id
+            info = db.sql_query_var('select Id, Nombre, Apellido from usuario where correo = %s', (correo, ))
+            session["id"] = info[0]['Id']
+            session["name"] = info[0]['Nombre']+ " " + info[0]['Apellido']
             return redirect(url_for('home'))
     return render_template('Login.html', error=error)
 
@@ -129,6 +139,9 @@ def confirmation():
             print("F")
     return render_template('confirmation.html')
 
+
+# Cosas de Alquilar ............................................................
+
 @app.route('/Home', methods=['GET', 'POST'])
 def home():
     no_session()
@@ -170,44 +183,6 @@ def Search():
     )
     return render_template("carro.html", gmap=gmap, cars=cars)
 
-@app.route('/Rented', methods=['GET', 'POST'])
-def Rented():
-    no_session()
-    db = DataBaseConnection
-    from random import uniform
-    x, y = uniform(-180, 180), uniform(-90, 90)
-
-    markers = []
-    carros = db.sql_query('select * from carro;')
-    cars = []
-    for car1 in carros:
-        cars.append(car(car1['Placa'], car1['Precio'], car1['Marca'], car1['Modelo']))
-        x, y = uniform(-180, 180), uniform(-90, 90)
-        markers.append({
-            'lat': y,
-            'lng': x,
-            'infobox': "<h1>" + car1['Marca'] + "</h1>"
-                                                "<p>Modelo: " + car1['Modelo'] + " </p>"
-                                                                                 "<p2>Precio: $" + car1[
-                           'Precio'] + "/día </p>"
-                                       "<br>"
-                                       "<br>"
-                                       "<img src='/static/cars/" + car1[
-                           'Placa'] + "/fotos/0.png' width='128' height='128'>",
-        }
-        )
-    print(markers)
-    gmap = Map(
-        identifier="gmap",
-        varname="gmap",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=markers,
-        fullscreen_control=True,
-        style="position: absolute;left:0px;height:100%;width: 75%;padding: 0;"
-    )
-    return render_template("carro.html", gmap=gmap, cars=cars)
-
 @app.route("/Display/<car_code>", methods=['GET', 'POST'])
 def show_car(car_code):
     no_session()
@@ -221,34 +196,6 @@ def show_car(car_code):
         return render_template('display.html', car=carD)
     else:
         abort(404)
-
-@app.route("/MyRent", methods=['GET', 'POST'])
-def show_rent():
-    no_session()
-    db = DataBaseConnection
-    if db.sql_query_var('select count(*) from prestamo where Id_rentb = %s and Fecha_f between CURRENT_DATE() and "2040-07-05";', (session['id'],))[0]['count(*)']>0:
-        q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
-        car_id = q[0]['Id_carro']
-        print(car_id)
-        p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], car_id, q[0]['Id_renta'], q[0]['Id_rentb'], db.sql_query_var('select Placa from carro where id_car = %s', (car_id, ))[0]['Placa'])
-        print(p.placa)
-    else:
-        p=None
-    return render_template('Myrent.html', p=p)
-
-@app.route('/EditProfile', methods=['GET', 'POST'])
-def Editprofile():
-    no_session()
-    user = session["id"]
-    db = DataBaseConnection
-    u1 = db.sql_query_var("select * from usuario where Id = %s", (user, ))
-    LIuser= User(u1[0]['Nombre'], u1[0]['Apellido'], u1[0]['Cedula'],  u1[0]['Correo'], u1[0]['Bday'], u1[0]['Dir'])
-    if request.method == 'POST':
-        Dir = request.form['Address']
-        Mail = request.form['Mail']
-        db.sql_edit("update usuario set Dir = %s, correo = %s where id = %s;", (Dir, Mail, user ))
-        return redirect(url_for('Editprofile'))
-    return render_template('Editprofile.html', User=LIuser)
 
 @app.route('/AddCar', methods=['GET', 'POST'])
 def registrarCarro():
@@ -299,6 +246,20 @@ def registrarCarro():
 
     return render_template('registrarCarro.html')
 
+@app.route("/MyRent", methods=['GET', 'POST'])
+def show_rent():
+    no_session()
+    db = DataBaseConnection
+    if db.sql_query_var('select count(*) from prestamo where Id_rentb = %s and Fecha_f between CURRENT_DATE() and "2040-07-05";', (session['id'],))[0]['count(*)']>0:
+        q = db.sql_query_var('select * from prestamo where Id_rentb = %s;', (session['id'], ))
+        car_id = q[0]['Id_carro']
+        print(car_id)
+        p = rent(q[0]['Fecha_i'], q[0]['Fecha_f'], q[0]['precio'], car_id, q[0]['Id_renta'], q[0]['Id_rentb'], db.sql_query_var('select Placa from carro where id_car = %s', (car_id, ))[0]['Placa'])
+        print(p.placa)
+    else:
+        p=None
+    return render_template('Myrent.html', p=p)
+
 @app.route('/return-files/matricula/<car_code>', methods=['GET', 'POST'])
 def return_filem(car_code):
     path = 'static/cars/' + car_code + '/'
@@ -313,6 +274,86 @@ def return_filese(car_code):
 def return_fileso(car_code):
     path = 'static/cars/' + car_code + '/'
     return send_from_directory(directory=path, filename='soat.pdf', as_attachment=True)
+
+@app.route('/fc', methods=['GET', 'POST'])
+def fc():
+    no_session()
+    return render_template('formaDueno.html')
+
+@app.route('/fd', methods=['GET', 'POST'])
+def fd():
+    no_session()
+    return render_template('formaCliente.html')
+
+
+# Cosas del chat ............................................................
+
+
+@app.route('/chat', methods=['GET', 'POST'])
+def chat():
+    chatRooms = dbHandler.allChatRooms()
+    rooms=[]
+    for r in dbHandler.allChatRooms():
+        rooms.append(''.join(r))
+    return render_template("cuasihome.html", rooms=rooms)
+
+
+@app.route('/createChatRoom', methods=['GET', 'POST'])
+def createChatRoom():
+    chatRoomDb = 'lolazo'  # Creating new Name of the chatroom ID according to UNIX timestamp.
+
+    dbHandler.createChatRoomDB(chatRoomDb)  # Creating new table in database for new chatroom.
+    dbHandler.createChatRoomID(chatRoomDb)  # Enlisting new 'database ID' to 'ChatRoomID' table.
+
+    return (chatRoomDb)  # returning name of the new chatroom, client side script will be executed according to this.
+
+
+@app.route('/<chatRoomName>')  # variable 'url' for any chatroom
+def chatRoom(chatRoomName):
+    u = User('lol')
+    return render_template("index.html", chatRoomName=chatRoomName,
+                           u=u)  # This is common chatroom page, this will be renderd for any chatroom.
+
+
+@app.route('/addChatToDB', methods=['GET', 'POST'])
+def addChatToDB():
+    chatRoomID = request.form['chatRoomID']  # This data will come via ajax request, check 'main.js' file
+    username = request.form['username']  # same as previous
+    comment = request.form['comment']  # same as previous
+    # chatCount = request.form['chatCount'] #This data will come via ajax request, this chat count will be incremented acoording to client side.
+
+    dbHandler.addChatToDB(chatRoomID, username,
+                          comment)  # comment and username will be inserted to db according to chatRoomID.
+
+    return ('', 204)  # For returning null value to client
+
+
+@app.route('/fetchChatData', methods=['GET', 'POST'])
+def fetchChatData():
+    chatCount = request.form['chatCount']
+    chatRoomID = request.form['chatRoomID']
+
+    chats = dbHandler.retrieveChatRoom(chatRoomID, chatCount)
+
+    return jsonify(chats)
+
+# Cosas del Perfil ..........................................................
+
+@app.route('/EditProfile', methods=['GET', 'POST'])
+def Editprofile():
+    no_session()
+    user = session["id"]
+    db = DataBaseConnection
+    u1 = db.sql_query_var("select * from usuario where Id = %s", (user, ))
+    LIuser= User(u1[0]['Nombre'], u1[0]['Apellido'], u1[0]['Cedula'],  u1[0]['Correo'], u1[0]['Bday'], u1[0]['Dir'])
+    if request.method == 'POST':
+        Dir = request.form['Address']
+        Mail = request.form['Mail']
+        db.sql_edit("update usuario set Dir = %s, correo = %s where id = %s;", (Dir, Mail, user ))
+        return redirect(url_for('Editprofile'))
+    return render_template('Editprofile.html', User=LIuser)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

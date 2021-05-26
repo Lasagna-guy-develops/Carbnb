@@ -1,3 +1,6 @@
+ <!DOCTYPE html>
+  <html lang="en">
+  <head>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,50 +99,50 @@ li a:hover {
         }
 
 </style>
-    <ul>
-    <li><a href=""></a></li>
-    <li><a href="http://127.0.0.1:5000/Home">Inicio</a></li>
-    <li><a href=http://127.0.0.1:5000/Search>Search cars</a></li>
-    <li><a href=http://127.0.0.1:5000/Rented>Rented Cars</a></li>
-    <li><a href=http://127.0.0.1:5000/MyRent>My rented car</a></li>
-    <li><a href=http://127.0.0.1:5000/EditProfile>Edit profile</a></li>
-    <li><a href=http://127.0.0.1:5000/AddCar>Add car</a></li>
-</ul>
-    {{ gmap.js }}
-</head>
-<body>
-{{ gmap.html }}
-<ul>
+  </head>
+  <body>
+<div>
+    <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
+    <div class="message_holder"></div>
 
-        <div class="right">
-     <table>
-      <form action="" method="GET">
-         <tr>
-          <td><h6>Marca: </h6></td><td><input type="text" class="form-control" name="marca" required></td>
-         </tr>
-         <tr>
-          <td><h6>Modelo: </h6></td><td><input type="text" class="form-control" name="Modelo" required></td>
-         </tr>
-         <tr>
-          <td><h6>Precio: </h6></td><td><input type="text" class="form-control" name="precio" required></td>
-         </tr>
-        <tr>
-         <td><input type="submit" value="Buscar"></td>
-        </tr>
-       </form>
-     </table>
-    </div>
+    <form action="" method="POST">
+      <input type="text" class="username" placeholder="User Name"/>
+      <input type="text" class="message" placeholder="Messages"/>
+      <input type="submit"/>
+    </form>
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br><br>
-    <br>
-    <br>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = '{{ u.name }}'
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script>
+</div>
+<div>
+  <ul>
      <table class="right">
      <tr>
          <th>Placa </th>
@@ -157,5 +160,6 @@ li a:hover {
     {% endfor %}
     </table>
 </ul>
-</body>
-</html>
+</div>
+  </body>
+  </html>.min.js"></script>
