@@ -151,36 +151,82 @@ def home():
 def Search():
     no_session()
     db = DataBaseConnection
-    from random import uniform
-    x, y = uniform(-180, 180), uniform(-90, 90)
 
-    markers=[]
-    carros = db.sql_query('select * from carro;')
-    cars=[]
-    for car1 in carros:
-        cars.append(car(car1['Placa'], car1['Precio'], car1['Marca'], car1['Modelo']))
+    if request.method == "GET":
+        from random import uniform
         x, y = uniform(-180, 180), uniform(-90, 90)
-        markers.append({
-                'lat': y,
-                'lng': x,
-                'infobox': "<h1>"+car1['Marca']+"</h1>"
-                           "<p>Modelo: "+car1['Modelo']+" </p>"
-                           "<p2>Precio: $"+car1['Precio']+"/día </p>"
-                           "<br>"
-                           "<br>"
-                           "<img src='/static/cars/"+car1['Placa']+"/fotos/0.png' width='128' height='128'>",
-            }
+
+        markers=[]
+        carros = db.sql_query('select * from carro;')
+        cars=[]
+        for car1 in carros:
+            cars.append(car(car1['Placa'], car1['Precio'], car1['Marca'], car1['Modelo']))
+            x, y = uniform(-180, 180), uniform(-90, 90)
+            markers.append({
+                    'lat': y,
+                    'lng': x,
+                    'infobox': "<h1>"+car1['Marca']+"</h1>"
+                               "<p>Modelo: "+car1['Modelo']+" </p>"
+                               "<p2>Precio: $"+car1['Precio']+"/día </p>"
+                               "<br>"
+                               "<br>"
+                               "<img src='/static/cars/"+car1['Placa']+"/fotos/0.png' width='128' height='128'>",
+                }
+            )
+        print(markers)
+        gmap = Map(
+            identifier="gmap",
+            varname="gmap",
+            lat=37.4419,
+            lng=-122.1419,
+            markers=markers,
+            fullscreen_control=True,
+            style="position: absolute;left:0px;height:100%;width: 75%;padding: 0;"
         )
-    print(markers)
-    gmap = Map(
-        identifier="gmap",
-        varname="gmap",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=markers,
-        fullscreen_control=True,
-        style="position: absolute;left:0px;height:100%;width: 75%;padding: 0;"
-    )
+
+    elif request.method == "POST":
+        from random import uniform
+        x, y = uniform(-180, 180), uniform(-90, 90)
+
+        markers=[]
+        marcaReq = request.form['marca']
+        modeloReq = request.form['modelo']
+        precioReq = request.form['precio']
+
+        myQuery =""" SELECT *
+        FROM carro WHERE
+         Marca Like "%"+%s+"%" AND
+         Modelo Like "%"+%s+"%" AND
+         Precio Like "%"+%s+"%";"""
+
+
+        carros = db.sql_query_var(myQuery, (marcaReq, modeloReq,precioReq))
+        cars=[]
+        for car1 in carros:
+            cars.append(car(car1['Placa'], car1['Precio'], car1['Marca'], car1['Modelo']))
+            x, y = uniform(-180, 180), uniform(-90, 90)
+            markers.append({
+                    'lat': y,
+                    'lng': x,
+                    'infobox': "<h1>"+car1['Marca']+"</h1>"
+                               "<p>Modelo: "+car1['Modelo']+" </p>"
+                               "<p2>Precio: $"+car1['Precio']+"/día </p>"
+                               "<br>"
+                               "<br>"
+                               "<img src='/static/cars/"+car1['Placa']+"/fotos/0.png' width='128' height='128'>",
+                }
+            )
+        print(markers)
+        gmap = Map(
+            identifier="gmap",
+            varname="gmap",
+            lat=37.4419,
+            lng=-122.1419,
+            markers=markers,
+            fullscreen_control=True,
+            style="position: absolute;left:0px;height:100%;width: 75%;padding: 0;"
+        )
+
     return render_template("carro.html", gmap=gmap, cars=cars)
 
 @app.route("/Display/<car_code>", methods=['GET', 'POST'])
