@@ -9,7 +9,7 @@ def connect():
     conn = mysql.connector.connect(host = "localhost",
                                     database = "carbnb",
                                     user = "root",
-                                    password = ")Sebas9164*",
+                                    password = "",
                                     auth_plugin='mysql_native_password'
                                     )
 
